@@ -1,0 +1,541 @@
+meta:
+  engine: 4.1.0
+
+units:
+  # Cherry MX are 19mm x 19mm
+  # Kailh Choc are 18mm wide x 17mm tall
+
+  # u means 1Cherry MX 19mm switch spacing
+  # U means 19.05mm for keycaps
+  # cx means Kailh Choc 18mm wide switch spacing
+  # cy means Kailh Choc 17mm tall switch spacing
+
+  # Looking in the datasheet, i found that the real size in measurement for choc switches are 15mm x 15mm.
+  # Need to confirm it when i got the switches, but i have no idea why the measurement for a choc cx and cy is a different one.
+
+  # Since i have tiny hands and i want the tiniest keyboard possible,
+  # in this project, i will use 16mm x 16mm switch spacing.
+  # The switches should have 1mm distance between then.
+
+  # Proxy Spacing Variables
+  # k means key
+  # This will set the switch size
+  kh: cy - 1
+  kw: cx - 2
+
+  # Proxy Padding Variables
+  # p means padding
+  # This will set the switch spacing
+  ph: cy
+  pw: cx - 1
+
+  # $default_width: cx
+  # $default_height: cy
+  # Have no idea how to use this one, gonna keep commented.
+
+  # Defaults to M2 Screws
+  screwSize: 1.5
+  standoffSize: 2.5
+
+points:
+  zones:
+    matrix:
+      anchor:
+        shift: [100, -100] # Fix KiCad placement
+
+      # Here was just trial and error to have a good feeling in the hands.
+      # From what I understand, the stagger part is based on what comes first
+      # (and in this case it's the 'outer' part).
+      key:
+        padding: pw
+        spread: pw
+        width: kw
+        height: kh
+      columns:
+        outer:
+          key:
+            column_net: C0
+        pinky:
+          key:
+            stagger: 0.5U
+            column_net: C1
+        ring:
+          key:
+            stagger: 0.3U
+            column_net: C2
+        middle:
+          key:
+            stagger: 0.25U
+            column_net: C3
+        index:
+          key:
+            stagger: -0.4U
+            column_net: C4
+        inner:
+          key:
+            stagger: -0.1U
+            column_net: C5
+        # pinky.key.stagger: 0.5U
+        # ring.key.stagger: 0.3U
+        # middle.key.stagger: 0.25U
+        # index.key.stagger: -0.4U
+        # inner.key.stagger: -0.1U
+      rows:
+        bottom:
+          row_net: R3
+        home:
+          row_net: R2
+        top:
+          row_net: R1
+        num: 
+          row_net: R0
+    # Same trial and error, but i just modified one of the base layouts that i found in ergogen.
+    bottom-mod-row:
+      key:
+        padding: pw
+        spread: pw
+        width: kw
+        height: kh
+      anchor:
+        ref: matrix_pinky_bottom
+        shift: [pw, -ph]
+      columns:
+        ctrl:
+          key:
+            stagger: 3
+            column_net: C1
+        super:
+          key:
+            stagger: 2
+            column_net: C2
+        alt:
+          key:
+            stagger: -2
+            column_net: C3
+        raise:
+          key:
+            stagger: -2
+            column_net: C4
+      rows:
+        mod:
+          row_net: R4
+
+    thumb:
+      key:
+        padding: pw
+        spread: ph
+        width: kw
+        height: 1.5kh
+        tags:
+          - thumb_key
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [1.05pw, -1.4ph]
+        rotate: -18
+      columns:
+        enter:
+          key:
+            column_net: C5
+      rows:
+        mod:
+          row_net: R4
+    # mcu-placement:
+    #   key:
+    #     width: 17.78
+    #     height: 33.98
+    #   anchor:
+    #     ref: matrix_inner_num
+    #     shift: [pw+5, -3.5]
+
+
+outlines:
+  basic-keys:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [kw, kh]
+      # thumb
+    - what: rectangle
+      where: thumb_key
+      size: [kh, 1.5kh]
+      # mcu
+    - what: rectangle
+      fillet: 0.7
+      where:
+          ref: matrix_inner_num
+          shift: [pw+2, -12.25]
+      size: [18, 33.08]
+      bound: false
+      # knob
+    - what: rectangle
+      fillet: 0.7
+      where:
+          ref: matrix_inner_num
+          shift: [18, -51]
+      size: [12, 12]
+      bound: false
+
+  base_layout:
+    # keys
+  - what: rectangle
+    fillet: 1
+    #operation: stack
+    where: true
+    size: [kh + 6, kh + 6]
+    # thumb
+  - what: rectangle
+    fillet: 0.7
+    where: thumb_key
+    size: [kh+6, 1.5kh+6]
+  # mcu
+  - what: rectangle
+    fillet: 0.7
+    where:
+        ref: matrix_inner_num
+        shift: [pw+2, -30]
+    size: [21, 72]
+    bound: false
+  # closing the pcb
+  ## left
+  - what: rectangle
+    fillet: 0.7
+    where:
+        ref: matrix_pinky_bottom
+        shift: [u, 0]
+    size: [3u, 1.8u]
+    bound: false
+  
+  big_base_layout:
+    # keys
+  - what: rectangle
+    fillet: 1
+    #operation: stack
+    where: true
+    size: [kh + 8, kh + 8]
+    # thumb
+  - what: rectangle
+    fillet: 0.7
+    where: thumb_key
+    size: [kh+8, 1.5kh+8]
+  # mcu
+  - what: rectangle
+    fillet: 0.7
+    where:
+        ref: matrix_inner_num
+        shift: [pw+2, -30]
+    size: [23, 74]
+    bound: false
+  # closing the pcb
+  ## left
+  - what: rectangle
+    fillet: 0.7
+    where:
+        ref: matrix_pinky_bottom
+        shift: [u, 0]
+    size: [3u+2, 1.8u+2]
+    bound: false
+  # # wont use this one.
+  # layout_1:
+  #   - what: polygon
+  #     operation: stack
+  #     fillet: 2
+  #     points:
+  #       - ref: matrix_outer_num
+  #         shift: [-0.8pw, 0.8ph]
+  #       - ref: matrix_pinky_num
+  #         shift: [-0.6pw, 0.8ph]
+  #       - ref: matrix_ring_num
+  #         shift: [-0.6pw, 0.8ph]
+  #       - ref: matrix_middle_num
+  #         shift: [-0.5pw, 0.8ph]
+  #       - ref: matrix_middle_num
+  #         shift: [0.5pw, 0.8ph]
+  #       - ref: matrix_inner_num
+  #         shift: [2pw, ph]
+  #       - ref: thumb_enter
+  #         shift: [pw, 0]
+  #       - ref: thumb_enter
+  #         shift: [pw, -ph]
+  #       - ref: bottom-mod-row_ctrl
+  #         shift: [pw, -ph]
+  #       - ref: matrix_outer_bottom
+  #         shift: [-0.8pw, -ph]
+  union:
+    - name: base_layout
+    - operation: subtract
+      name: basic-keys
+
+  mounting:
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky_bottom]
+        shift: [0, -11]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_pinky_top]
+        shift: [8, -2]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_middle_bottom]
+        shift: [0, -11]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [matrix_inner_top]
+        shift: [-7.75, -1.75]
+    - what: circle
+      radius: screwSize
+      where:
+        ref: [thumb_enter_mod]
+        shift: [-11, 12]
+  standoff:
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: [matrix_pinky_bottom]
+        shift: [0, -11]
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: [matrix_pinky_top]
+        shift: [8, -2]
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: [matrix_middle_bottom]
+        shift: [0, -11]
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: [matrix_inner_top]
+        shift: [-7.75, -1.75]
+    - what: circle
+      radius: standoffSize
+      where:
+        ref: [thumb_enter_mod]
+        shift: [-11, 12]
+
+pcbs:
+  pcb-board-2:
+    template: kicad8
+    outlines:
+      main:
+        outline: base_layout
+    footprints:
+      choc_switch:
+        where: true
+        # what: choc
+        what: switch_choc_v1_v2 # ceoloide choc switch
+        params:
+          # keycaps:
+          reversible: true # (for ceoloide/choc) To keep if i want a reverse plate
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{row_net}}"
+          # reverse: true # (for ergogen choc) To keep if i want a reverse plate
+          choc_v1_support: false
+          choc_v2_support: false
+          # include_traces_vias: true
+
+      # mcu:
+      #   what: promicro
+      #   params:
+      #     orientation: down
+      #   where:
+      #     ref: [matrix_inner_num, matrix_inner_num]
+      #     shift: [21, -2]
+      #     rotate: -90
+
+      mcu:
+        what: mcu_nice_nano
+        params:
+          # side: up
+          P0: DAT
+          P1: LED
+          P21: C0
+          P20: C1
+          P19: C2
+          P18: C3
+          P15: C4
+          P14: C5
+          P2: SDA
+          P3: SCL
+          P4: CS
+          P5: R0
+          P6: R1
+          P7: R2
+          P8: R3
+          P9: R4
+
+          reversible: true
+          include_traces: true
+          show_silk_labels: true
+          show_via_labels: true
+          show_instructions: false
+          use_rectangular_jumpers: true
+          # reverse_mount: true
+        where:
+          ref: matrix_inner_num
+          shift: [19, -12]
+
+      diode:
+        what: diode
+        where: true
+        params:
+          from: "{{row_net}}"
+          to: "{{column_net}}"
+        adjust:
+          shift: [0, -5]
+      
+      display:
+        what: display_nice_view
+        params:
+          MOSI: SDA
+          SCK: SCL
+          reversible: true
+          include_labels: false
+          invert_jumpers_position: true
+        where:
+          ref: matrix_inner_num
+          shift: [19, -14.5]
+      
+      # # Still dont know if i'll use this one.
+      # display-oled:
+      #   what: oled
+      #   params:
+      #     side: "F"
+      #     SDA: P2
+      #     SCL: P3
+      #   where:
+      #     ref.aggregate.parts: [matrix_inner_num, matrix_inner_num]
+      #     shift: [14, -22.8]
+      #     rotate: 90
+
+      on_off_switch:
+        what: power_switch_smd_side
+        where: matrix_inner_num
+        params:
+          from: RAW
+          to: BAT_P
+          reversible: true
+        adjust:
+          shift: [27.6, -38]
+          # rotate: 90
+
+      reset_switch:
+        what: reset_switch_smd_side
+        where: matrix_inner_num
+        params:
+          from: GND
+          to: RST
+          reversible: true
+          include_bosses: true
+        adjust:
+          shift: [19, 3.75]
+
+      battery_connector:  
+        what: battery_connector_jst_ph_2
+        where: matrix_inner_num
+        params:
+          BAT_P: BAT_P
+          BAT_N: GND
+          reversible: true
+          include_courtyard: false
+        adjust:
+          shift: [15, -38.5]
+          rotate: 90
+      
+      knob:
+        what: rotary_encoder_ec11_ec12
+        params:
+          include_momentary_switch_pads: true
+          include_plate_hole_marking: true
+          include_silkscreen: true
+          include_plated_mounting_holes: true
+        where:
+          ref: matrix_inner_num
+          shift: [18, -51]
+
+      hole_pinky_bottom:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky_bottom]
+          shift: [0, -11]
+      hole_pinky_top:
+        what: mountinghole
+        where:
+          ref: [matrix_pinky_top]
+          shift: [8, -2]
+      hole_middle_bottom:
+        what: mountinghole
+        where:
+          ref: [matrix_middle_bottom]
+          shift: [0, -11]
+      hole_inner_top:
+        what: mountinghole
+        where:
+          ref: [matrix_inner_top]
+          shift: [-7.75, -1.75]
+      hole_thumb:
+        what: mountinghole
+        where:
+          ref: [thumb_enter_mod]
+          shift: [-11, 12]
+
+      # # I dont think i'll need this.
+      # reset_button:
+      #   what: button
+      #   params:
+      #     from: GND
+      #     to: RST
+      #   where:
+      #     ref.aggregate.parts: [matrix_inner_top, matrix_inner_top]
+      #     shift: [0, -1]
+      #     rotate: -90
+
+cases:
+  key_cover:
+    - name: union
+      extrude: 1
+  bottom_base:
+    - name: base_layout
+      extrude: 1
+  bottom_cover:
+    - name: big_base_layout
+      extrude: 1
+  _outerWall:
+    - name: big_base_layout
+      extrude: 4
+  _innerWall:
+    - name: base_layout
+      extrude: 4
+  wall:
+    - what: case
+      name: _outerWall
+      operation: add
+    - what: case
+      name: _innerWall
+      operation: subtract
+  _holes:
+    - name: mounting
+      extrude: 4
+  _standoff:
+    - name: standoff
+      extrude: 4
+
+  case:
+    - what: case
+      name: _standoff
+      operation: add
+    - what: case
+      name: _holes
+      operation: subtract
+    - what: case
+      name: bottom_cover
+      operation: add
+    - what: case
+      name: wall
+      operation: add
