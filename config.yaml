@@ -319,7 +319,7 @@ outlines:
         shift: [-11, 12]
 
 pcbs:
-  pcb-board-2:
+  my-pcb:
     template: kicad8
     outlines:
       main:
@@ -339,6 +339,21 @@ pcbs:
           choc_v1_support: false
           choc_v2_support: false
           # include_traces_vias: true
+      
+      # mx-switch:
+      #   where: true
+      #   # what: choc
+      #   what: switch_mx # ceoloide choc switch
+      #   params:
+      #     # keycaps:
+      #     reversible: true # (for ceoloide/choc) To keep if i want a reverse plate
+      #     hotswap: true
+      #     from: "{{column_net}}"
+      #     to: "{{row_net}}"
+      #     # reverse: true # (for ergogen choc) To keep if i want a reverse plate
+      #     # choc_v1_support: false
+      #     # choc_v2_support: false
+      #     # include_traces_vias: true
 
       # mcu:
       #   what: promicro

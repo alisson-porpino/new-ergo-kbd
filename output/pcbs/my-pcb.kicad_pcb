@@ -10,8 +10,8 @@
   )
   (paper "A3")
   (title_block
-    (title "pcb-board-2")
-    (date "2025-03-05")
+    (title "my-pcb")
+    (date "2025-03-15")
     (rev "v1.0.0")
     (company "Unknown")
   )
